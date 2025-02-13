@@ -14,13 +14,13 @@ Welcome to the **Cypress Test Suite**! 🎯 This project contains automated test
 
 1. Clone the repository:
    ```sh
-   git clone https://github.com/your-username/cypress-tests.git
-   cd cypress-tests
+   git clone https://github.com/vsunholy/cypressTasks.git
+   cd cypressTasks
    ```
 
 2. Install dependencies:
    ```sh
-   npm install cypress
+   npm install
    ```
 
 3. Run Cypress in interactive mode:
@@ -54,5 +54,8 @@ Welcome to the **Cypress Test Suite**! 🎯 This project contains automated test
 
 ### 6️⃣ Hover Effect Test
 - Ensures tooltip appears on hover 🏷️
+
+
+
 
 
