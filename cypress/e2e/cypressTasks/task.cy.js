@@ -33,7 +33,7 @@ describe('Cypress Testų Scenarijai', () => {
       cy.get('form').submit();
       // Patikriname, ar rodoma sveikinimo žinutė
       cy.get('#greeting').should('be.visible')
-        .and('not.have.text', '');
+        .and('have.text', 'Sveiki, ' + username);
       // Patikriname, ar rodoma profilio informacija
       cy.get('#profile').should('be.visible')
         .and('not.have.text', '');
