@@ -35,8 +35,10 @@ describe('Cypress Testų Scenarijai', () => {
       cy.get('#greeting').should('be.visible')
         .and('have.text', 'Sveiki, ' + username);
       // Patikriname, ar rodoma profilio informacija
-      cy.get('#profile').should('be.visible')
-        .and('not.have.text', '');
+      cy.get('#profile h3').should('be.visible')
+        .and('have.text', 'Studento profilis');
+      cy.get('#profile p').should('be.visible')
+        .and('have.text', 'Čia yra studento profilio informacija.');
 
     });
   });
