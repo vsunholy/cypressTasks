@@ -1,39 +1,52 @@
 /// <reference types="cypress" />
 
 describe('Cypress Testų Scenarijai', () => {
-  // Prieš kiekvieną testą atidaro pagrindinį puslapį
+
   beforeEach(() => {
-    // JŪSŲ KODAS 
+    cy.visit('http://127.0.0.1:5500/index.html');
   });
 
   describe('1. Pagrindinio puslapio testas', () => {
     it('Patikrina, ar banner yra matomas ir mygtuko paspaudimas pakeičia URL', () => {
-      // Patikriname, ar banner yra matomas ir turi teisingą tekstą
-      // JŪSŲ KODAS
-      // Gauname alert pranešimą ir patikriname jo tekstą
-      // JŪSŲ KODAS 
-      // Paspaudžiame mygtuką "type"
-      // JŪSŲ KODAS 
-      // Patikriname, ar URL įtraukia "/commands/actions"
-      // JŪSŲ KODAS 
+
+      cy.get('.banner').should('be.visible')
+        .and('have.text', 'Sveiki atvykę į Cypress testų puslapį!');
+
+      cy.on('window:alert', (text) => {
+        expect(text).to.equal('Navigacija į /commands/actions atlikta!');
+      });
+
+      cy.get('#action-type').click();
+
+
+      cy.url().should('include', '/commands/actions');
     });
   });
 
   describe('2. Prisijungimo formos testas', () => {
     it('Užpildo formą ir rodo sveikinimo žinutę bei profilio informaciją', () => {
       // Sukuriame kintamuosius su prisijungimo duomenimis ir juos įvedame į formą
-      // JŪSŲ KODAS
+      const username = 'aciu';
+      const password = 'tau';
+      cy.get('#username').type(username);
+      cy.get('#password').type(password);
+      cy.get('form').submit();
       // Patikriname, ar rodoma sveikinimo žinutė
-      // JŪSŲ KODAS
+      cy.get('#greeting').should('be.visible')
+        .and('not.have.text', '');
       // Patikriname, ar rodoma profilio informacija
-      // JŪSŲ KODAS
+      cy.get('#profile').should('be.visible')
+        .and('not.have.text', '');
+
     });
   });
 
   describe('3. Dinaminių elementų testas', () => {
     it('Patikrina, ar visi sąrašo elementai turi žodį "Item"', () => {
       // Randame visus sąrašo elementus ir patikriname, ar jie turi žodį "Item"
-      // JŪSŲ KODAS
+      cy.get('#item-list li').each(($item) => {
+        cy.wrap($item).should('contain.text', 'Item');
+      });
     });
   });
 
@@ -48,35 +61,44 @@ describe('Cypress Testų Scenarijai', () => {
       };
 
       // Interceptuojame GET užklausą į JSONPlaceholder API
-      // JŪSŲ KODAS
+      cy.intercept('GET', 'https://jsonplaceholder.typicode.com/posts/1', {
+        body: stubbedData
+      }).as('getStubbedData');
+
       // Paspaudžiame mygtuką, kuris iškviečia fetch užklausą
-      // JŪSŲ KODAS
+      cy.get('#fetch-data').click();
+
       // Laukiame, kol užklausa bus atlikta
-      // JŪSŲ KODAS
+      cy.wait('@getStubbedData');
       // Patikriname, ar .data-container elemente rodomi stubinto atsakymo duomenys
-      // JŪSŲ KODAS
+      cy.get('.data-container').should('be.visible')
+        .and('contain.text', stubbedData.title)
+        .and('contain.text', stubbedData.body);
     });
   });
 
   describe('5. Asinchroninės operacijos testas', () => {
     it('Patikrina, ar asinchroninė operacija baigiasi teisingai', () => {
       // Paspaudžiame mygtuką, kuris iškviečia asinchroninę operaciją
-      // JŪSŲ KODAS
+      cy.get('#async-action').click();
       // Iškart po paspaudimo turi būti rodomas pranešimas
-      // JŪSŲ KODAS
+      cy.get('#async-result').should('be.visible')
+        .and('not.have.text', '');
       // Laukiame, kol asinchroninė operacija baigsis (naudojame šiek tiek ilgesnį timeout)
-      // JŪSŲ KODAS
+      cy.get('#async-result', { timeout: 3000 }).should('have.text', 'Asinchroninė operacija baigta!');
+
+
     });
   });
 
   describe('6. Hover efekto testas', () => {
     it('Rodo tooltip, kai užvedama pele ant hover-box', () => {
       // Iš pradžių tooltip neturėtų būti matomas
-      // JŪSŲ KODAS
+      cy.get('#tooltip').should('not.be.visible');
       // Simuliuojame pelės užvedimą ant elemento
-      // JŪSŲ KODAS
+      cy.get('#hover-box').trigger('mouseover');
       // Simuliuojame pelės nuvedimą nuo elemento
-      // JŪSŲ KODAS
+      cy.get('#hover-box').trigger('mouseout');
     });
   });
 });
