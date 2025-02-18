@@ -85,7 +85,7 @@ describe('Cypress Testų Scenarijai', () => {
       cy.get('#async-action').click();
       // Iškart po paspaudimo turi būti rodomas pranešimas
       cy.get('#async-result').should('be.visible')
-        .and('not.have.text', '');
+        .and('have.text', 'Operacija prasidėjo...');
       // Laukiame, kol asinchroninė operacija baigsis (naudojame šiek tiek ilgesnį timeout)
       cy.get('#async-result', { timeout: 3000 }).should('have.text', 'Asinchroninė operacija baigta!');
 
@@ -99,8 +99,10 @@ describe('Cypress Testų Scenarijai', () => {
       cy.get('#tooltip').should('not.be.visible');
       // Simuliuojame pelės užvedimą ant elemento
       cy.get('#hover-box').trigger('mouseover');
+      cy.get('#tooltip').should('be.visible');
       // Simuliuojame pelės nuvedimą nuo elemento
       cy.get('#hover-box').trigger('mouseout');
+      cy.get('#tooltip').should('not.be.visible');
     });
   });
 });
